@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF VIEWER : dernier doucment chargé</title>
+</head>
+<body>
+    <h1 style="text-align:center;">PDF VIEWER : dernier doucment chargé</h1>
+    
+    {% for i in range(decisions|length) %}
+    <div>{{ decisions[i]}}</div>
+    {% endfor %}
+</body>
+</html>

@@ -1,39 +1,19 @@
+FROM python:3.12-slim
 
-# 1) Base image
-FROM python:3.12-slim AS base
-
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    # Optional: set the port once, used by EXPOSE and Gunicorn
-    PORT=8000
-
-# 2) System deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
- && rm -rf /var/lib/apt/lists/*
-
-# 3) Create non-root user & workdir
-RUN useradd -m appuser
+# Set working directory
 WORKDIR /app
 
-# 4) Install Python deps
+# Copy requirements first for caching
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5) Copy application code
+# Copy the rest of the app
 COPY . .
 
-# 6) Permissions and user
-RUN chown -R appuser:appuser /app
-USER appuser
+# Expose Flask default port
+EXPOSE 5000
 
-# 7) Expose port & run Gunicorn
-EXPOSE 8000
-
-# If your Flask app is in app.py and the Flask instance is named "app":
-#   module = app
-#   flask object = app
-# so WSGI path is "app:app"
-#
-# Tune workers/threads as needed; a common rule: workers = 2*CPU+1
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--threads", "2", "app:app"]
+# Run the app
+CMD ["python", "-m", "src.main"]

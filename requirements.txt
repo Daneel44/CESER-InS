@@ -1,5 +1,7 @@
 numpy
 pandas
 PyPDF2
-gunicorn==22.0.0
 llm
+werkzeug
+flask
+openpyxl

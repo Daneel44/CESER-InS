@@ -7,10 +7,6 @@ from flask import Flask, render_template, request, flash, request, redirect, sen
 from src.pdf_parser import PdfParser
 from src.recherche_cosine import RechercheCosine
 
-os.environ["OPENAI_API_KEY"] = (
-    ""
-)
-
 rechercheCosine = RechercheCosine()
 pdfParser = PdfParser()
 

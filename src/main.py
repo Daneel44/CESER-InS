@@ -3,10 +3,17 @@ from io import BytesIO
 import os
 import pandas as pd
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, request, flash, request, redirect, send_file
+from flask import Flask, render_template, request, flash, redirect, send_file
 from src.pdf_parser import PdfParser
 from src.recherche_cosine import RechercheCosine
 
+
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise RuntimeError(
+        "OPENAI_API_KEY is not set. Define it in your environment or via `llm keys set openai`."
+    )
 
 rechercheCosine = RechercheCosine()
 pdfParser = PdfParser()
@@ -15,11 +22,6 @@ app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "src/uploads"
 ALLOWED_EXTENSIONS = {"txt", "pdf"}
 app.add_url_rule("/uploads/<name>", endpoint="download_file", build_only=True)
-
-import ssl
-
-ssl._create_default_https_context = ssl._create_unverified_context
-
 
 def allowed_file(filename) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -110,4 +112,7 @@ def export_excel(requested_name):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+

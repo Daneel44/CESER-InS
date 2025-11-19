@@ -1,7 +1,5 @@
-langchain_huggingface
 numpy
 pandas
-sentence-transformers
 PyPDF2
 gunicorn==22.0.0
 llm

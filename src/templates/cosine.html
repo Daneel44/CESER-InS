@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Similarité cosine pour les documents suivants :</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <title>Similarité cosine pour {{filename}} :</title>
+    
+    <button onclick="download()">Télécharger en Excel</button>
+    
+    <script>
+        
+        
+        function download() {
+        const file = {{filename|tojson}};
+        console.log("Utilisateur :", file);
+        window.location.href = `/export-excel/${encodeURIComponent(file)}`;
+        }
+    </script>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Thème</th>
+                <th>Sous-Thème</th>
+                <th>Constat</th>
+                <th>Titre préconisation</th>
+                <th>Détail préconisation</th>
+                <th>Date de la décision</th>
+                <th>Titre décision</th>
+                <th>Détail décision</th>
+                <th>Coefficient de similarité</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(l1|length) %}
+            <tr>
+                <td>{{ l1[i] if i < l1|length else '' }}</td>
+                <td>{{ l2[i] if i < l2|length else '' }}</td>
+                <td>{{ l3[i] if i < l3|length else '' }}</td>
+                <td>{{ l4[i] if i < l4|length else '' }}</td>
+                <td>{{ l5[i] if i < l5|length else '' }}</td>
+                <td>{{ l6[i] if i < l6|length else '' }}</td>
+                <td>{{ l7[i] if i < l7|length else '' }}</td>
+                <td>{{ l8[i] if i < l8|length else '' }}</td>
+                <td>{{ l9[i] if i < l9|length else '' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
